@@ -1,0 +1,76 @@
+h1. hstore-properties
+
+
+h2. Setup
+
+
+Simply add following to your gemfile
+
+@gem 'hstore-properties'@
+
+Create @properties@ column in the model you would like to use properties within, i.e.
+
+@rails g migration AddPropertiesToUsers properties:hstore@
+
+Apply your migration
+
+@rake db:migrate@
+
+Finally, describe your properties in your model file 
+
+bc. class User < ActiveRecord::Base
+  include ActiveRecord::Properties
+  properties 'third_name', 
+             'some_cool_feature' => :boolean, 
+             'comments' => :counter,
+             'age' => :number
+end
+
+
+h2. Usage
+
+By default, all your properties are of type String. There are number of other property types available though...
+
+# string
+# boolean
+# number
+# counter
+
+All properties can be retrieved just as they are written into hstore column, by suffixing them with @_property@, i.e.
+
+@User.last.third_name_property #=> "Jack"@
+
+*Boolean* properties, can be additionaly retrieved by using @_enabled?@ suffix, that will cast them to boolean value, i.e.
+
+@User.last.some_cool_feature_enabled? #=> true@
+
+*Counter* properties, can be retrieved by using @_count@ suffix, that will cast them to integer value, i.e.
+
+@User.last.comments_count #=> 10@
+
+What is more, it is possible to bump counter properties, i.e. following line will increment comments property by 1
+
+@User.last.comments_bump!@
+
+
+h2. Updating through forms
+
+bc. <%= f.fields_for :properties, OpenStruct.new(@user.properties) do |builder| %>
+    <% User.properties.each do |property| %>
+       <%= builder.input property.name, property.formtastic_options %>
+    <% end %>
+<% end %>
+
+
+h2. Further customization
+
+If most of your properties are of the same type, but other than string, you can overwrite @default_proeprty_klass@ to make other type default, i.e.
+
+bc. 
+class User < ActiveRecord::Base
+#...
+  def default_property_klass
+    ActiveRecord::Properties::BooleanProperty
+  end
+end
+

@@ -1,0 +1,1 @@
+# activerecord-hstore_properties
