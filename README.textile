@@ -75,7 +75,7 @@ bc.. <%= semantic_form_for @user do |f| %>
 
 h2. Further customization
 
-If most of your properties are of the same type, but other than string, you can overwrite @default_proeprty_klass@ to make other type default, i.e.
+If most of your properties are of the same type, but other than string, you can overwrite @default_property_klass@ to make other type default, i.e.
 
 bc. 
 class User < ActiveRecord::Base
