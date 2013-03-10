@@ -19,7 +19,7 @@ Apply your migration
 Finally, describe your properties in your model file 
 
 bc. class User < ActiveRecord::Base
-  include ActiveRecord::Properties
+  include ActiveRecord::HstoreProperties
   properties 'third_name', 
              'some_cool_feature' => :boolean, 
              'comments' => :counter,
