@@ -1,5 +1,5 @@
 module Activerecord
   module HstoreProperties
-    VERSION = "0.0.2.alpha"
+    VERSION = "0.0.3"
   end
 end
