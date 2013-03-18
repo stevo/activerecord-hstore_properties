@@ -29,12 +29,16 @@ end
 
 h2. Usage
 
+h3. Retrieving values
+
 By default, all your properties are of type String. There are number of other property types available though...
 
-# string
-# boolean
-# number
-# counter
+* string
+* boolean
+* number
+* counter
+
+More will come in near future...
 
 All properties can be retrieved just as they are written into hstore column, by suffixing them with @_property@, i.e.
 
@@ -53,24 +57,37 @@ What is more, it is possible to bump counter properties, i.e. following line wil
 @User.last.comments_bump!@
 
 
-h2. Updating through forms
+h3. Updating through forms
 
-bc. <%= f.fields_for :properties, OpenStruct.new(@user.properties) do |builder| %>
-    <% User.properties.each do |property| %>
-       <%= builder.input property.name, property.formtastic_options %>
+You obviously need to add @:properties@ to yours @attr_accessible@
+
+Below is an example of building appropriate fields dynamically with formtastic
+
+bc.. <%= semantic_form_for @user do |f| %>
+    <%= f.first_name %>
+    <%= f.fields_for :properties, OpenStruct.new(@user.properties) do |builder| %>
+        <% User.properties.each do |property| %>
+            <%= builder.input property.name, property.formtastic_options %>
+        <% end %>
     <% end %>
+    <%= f.submit %>
 <% end %>
-
 
 h2. Further customization
 
-If most of your properties are of the same type, but other than string, you can overwrite @default_proeprty_klass@ to make other type default, i.e.
+If most of your properties are of the same type, but other than string, you can overwrite @default_property_klass@ to make other type default, i.e.
 
 bc. 
 class User < ActiveRecord::Base
 #...
-  def default_property_klass
+  def self.default_property_klass
     ActiveRecord::Properties::BooleanProperty
   end
 end
+
+h2. When to use?
+
+* If you consider adding redundant column to your table, that will only sometimes store any data
+* If you would like to make particular model "configurable"
+* If you will not likely perform queries on specific field but mostly read from it directly
 
