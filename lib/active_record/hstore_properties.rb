@@ -11,7 +11,7 @@ module ActiveRecord
     extend ActiveSupport::Concern
 
     included do
-     include ActiveRecord::Properties::Extensions::Booleans
+      include ActiveRecord::Properties::Extensions::Booleans
       include ActiveRecord::Properties::Extensions::Counters
 
       serialize :properties, ::ActiveRecord::Coders::Hstore
@@ -31,6 +31,15 @@ module ActiveRecord
     end
 
     module ClassMethods
+      def properties_set(*args)
+        self._properties.dup.tap do |all_properties|
+          unless args.blank?
+            all_properties.select! { |property| args.include?(property.name) }
+          end
+          all_properties.reject! { |property| property.name.to_s.starts_with?('_') }
+        end
+      end
+
       def properties(*args)
         if args.blank?
           self._properties ||= []
