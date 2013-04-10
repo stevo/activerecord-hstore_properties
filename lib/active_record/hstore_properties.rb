@@ -51,6 +51,8 @@ module ActiveRecord
       [property_name, suffixes.map{|suffix| "#{property_name}#{suffix}"}]
     end
 
+    private :evaluate_suffixes
+
 
     module ClassMethods
       def properties_set(*args)
