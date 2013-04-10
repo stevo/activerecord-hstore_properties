@@ -18,17 +18,39 @@ module ActiveRecord
       class_attribute :_properties
     end
 
-    def define_property_method(method_name, suffix, &block)
-      if method_name.ends_with?(suffix) and (self.class._properties.detect { |pn| pn.name.to_s == method_name.sub(suffix, '') })
-        prop_name = method_name.sub(suffix, '')
-        self.class.send(:define_method, method_name) do
-          block.call(prop_name, self)
+    def define_property_method(method_name, *suffixes, &block)
+      property_name, property_methods = evaluate_suffixes(method_name, suffixes)
+
+      if property_name
+        primary_method_name = property_methods.shift
+
+        #Define main method once...
+        self.class.send(:define_method, primary_method_name) do
+          block.call(property_name, self)
         end
-        [true, block.call(prop_name, self)]
+
+        #... and then define aliases
+        property_methods.each { |_method_name| self.class.send(:alias_method, _method_name, primary_method_name) }
+
+        [true, block.call(property_name, self)]
       else
         [false, nil]
       end
     end
+
+    def evaluate_suffixes(method_name, suffixes)
+      #Suffix does not match
+      return [nil, []] unless method_name.ends_with?(*suffixes)
+
+      property_name = method_name.dup
+      suffixes.each{|suffix| property_name.chomp!(suffix) }
+
+      #No property with that name
+      return [nil, []] unless self.class._properties.detect{|pn| pn.name.to_s == property_name }
+
+      [property_name, suffixes.map{|suffix| "#{property_name}#{suffix}"}]
+    end
+
 
     module ClassMethods
       def properties_set(*args)
