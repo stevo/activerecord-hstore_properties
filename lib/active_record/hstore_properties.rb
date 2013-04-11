@@ -50,8 +50,8 @@ module ActiveRecord
             primary_method_name = method_names.shift
 
             #Define main method once...
-            define_method(primary_method_name) do
-              self.instance_exec(property, &proc)
+            define_method(primary_method_name) do |*args|
+              self.instance_exec(property, *args, &proc)
             end
 
             #... and then define aliases

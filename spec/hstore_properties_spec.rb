@@ -18,11 +18,11 @@ describe ActiveRecord::HstoreProperties do
     end
   end
 
-  it "it should respond to properties call" do
+  it "should respond to properties call" do
     Comment.respond_to?(:properties).should be_true
   end
 
-  it "it should be possible to define properties" do
+  it "should be possible to define properties" do
     Comment.properties 'property_one', 'property_two'
     Comment.properties.should be_an_instance_of(Array)
     Comment.properties.map(&:name).should include('property_one', 'property_two')
@@ -33,7 +33,7 @@ describe ActiveRecord::HstoreProperties do
     Comment.properties.first.should be_a_kind_of(ActiveRecord::Properties::StringProperty)
   end
 
-  it "it should be possible to define property types other than string" do
+  it "should be possible to define property types other than string" do
     Comment.properties 'property_one', 'property_two' => :boolean
     Comment.properties.find { |p| p.name == 'property_two' }.should be_a_kind_of(ActiveRecord::Properties::BooleanProperty)
   end
@@ -48,8 +48,16 @@ describe ActiveRecord::HstoreProperties do
 
   it "properties_set should not return underscored properties" do
     Comment.properties '_property_one', 'property_two'
-    Comment.properties_set.find{|p| p.name == '_property_one'}.should be_nil
-    Comment.properties_set.find{|p| p.name == 'property_two'}.should_not be_nil
+    Comment.properties_set.find { |p| p.name == '_property_one' }.should be_nil
+    Comment.properties_set.find { |p| p.name == 'property_two' }.should_not be_nil
+  end
+
+  it "should be possible to assign property value using simple accessor" do
+    Comment.properties 'property_two' => :boolean
+    comment = Comment.new
+    comment.property_two = true
+    comment.save
+    comment.property_two_property.should == 'true'
   end
 
   context "boolean properties" do
@@ -92,10 +100,15 @@ describe ActiveRecord::HstoreProperties do
     it "should be possible to query for current count" do
       @comment.property_two_count.should == 0
       @comment.property_two_bump!
-
       @comment.property_two_count.should == 1
     end
+  end
 
+  context "translation properties" do
+    before(:each) do
+      Comment.properties 'property_two' => :counter
+      @comment = Comment.new
+      @comment.save
     end
-
+  end
 end
