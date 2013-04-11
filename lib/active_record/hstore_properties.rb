@@ -1,10 +1,12 @@
 require 'active_support/core_ext/class'
 require 'active_support/concern'
 require "active_record/properties/base"
+require "active_record/properties/common_accessors"
 require "active_record/properties/boolean_property"
 require "active_record/properties/counter_property"
 require "active_record/properties/number_property"
 require "active_record/properties/string_property"
+require "active_record/properties/translation_property"
 
 module ActiveRecord
   module HstoreProperties

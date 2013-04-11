@@ -106,9 +106,28 @@ describe ActiveRecord::HstoreProperties do
 
   context "translation properties" do
     before(:each) do
-      Comment.properties 'property_two' => :counter
+      Comment.properties 'property_two' => :translation
       @comment = Comment.new
       @comment.save
+    end
+
+    it "assigning a value should store it in current language scope" do
+      I18n.locale = :'en-GB'
+      @comment.property_two = "nice"
+      @comment.save
+
+      @comment.properties['property_two_en_gb'].should == 'nice'
+    end
+
+    it "retrieving raw value should take current locale into account" do
+      I18n.locale = :'en-GB'
+      @comment.property_two = "nice"
+      @comment.save
+
+      I18n.locale = :'nb-NO'
+      @comment.property_two_property.should be_nil
+      I18n.locale = :'en-GB'
+      @comment.property_two_property.should == 'nice'
     end
   end
 end

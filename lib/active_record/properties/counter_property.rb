@@ -1,6 +1,8 @@
 module ActiveRecord
   module Properties
     class CounterProperty < Base
+      include ActiveRecord::Properties::CommonAccessors
+
       def formtastic_options
         {:as => :number, :disabled => true}
       end
