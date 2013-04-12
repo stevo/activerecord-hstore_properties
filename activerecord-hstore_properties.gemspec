@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["stevo"]
   gem.email         = ["blazej.kosmowski@selleo.com"]
   gem.homepage      = "https://github.com/stevo/activerecord-hstore_properties"
-  gem.summary       = "Facilitate defining and retrieving information from hstore column"
+  gem.summary       = "hStore-based model properties on steroids!"
   gem.description   = "Allows to describe field names that will be stored within hstore column together with their types. Data can then be retrieved with a set of helpful getters."
 
   gem.files         = `git ls-files`.split($/)
