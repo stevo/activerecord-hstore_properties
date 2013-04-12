@@ -44,9 +44,17 @@ All properties can be retrieved just as they are written into hstore column, by 
 
 @User.last.third_name_property #=> "Jack"@
 
-*Boolean* properties, can be additionaly retrieved by using @_enabled?@ suffix, that will cast them to boolean value, i.e.
+*Boolean* properties, can be additionaly retrieved by using @_enabled?@ and "?" suffixes, that will cast them to boolean value, i.e.
 
 @User.last.some_cool_feature_enabled? #=> true@
+@User.last.some_cool_feature? #=> true@
+
+What is more, you can toggle value of boolean property using @_enable!@ / @_raise!@ and @_disable!@ / @_lower!@ suffixes, e.g.
+
+@User.last.some_cool_feature_enable! #=> Changes proeprty to true@
+@User.last.some_cool_feature_raise! #=> Changes proeprty to true@
+@User.last.some_cool_feature_disable! #=> Changes proeprty to false@ 
+@User.last.some_cool_feature_lower! #=> Changes proeprty to false@
 
 *Counter* properties, can be retrieved by using @_count@ suffix, that will cast them to integer value, i.e.
 
