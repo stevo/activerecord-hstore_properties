@@ -81,6 +81,39 @@ What is more, it is possible to bump counter properties, i.e. following line wil
 User.last.comments_bump!
 ```
 
+#### Translations
+
+*Translation* kind of property allows you to store translated strings in properties column. 
+The simplest way to store translation is just assign it a value, and it will save it in current locale, e.g.
+
+```ruby
+class Category < ActiveRecord::Base
+  include ActiveRecord::HstoreProperties
+  properties 'caption' => :translation            
+end
+
+c = Category.last
+c.caption = "Nice product" #this will save 'Nice product' into caption_en property 
+c.save
+c.caption #this will retrieve 'Nice product' from caption_en property 
+```
+
+You can always enforce in which locale you would like to store property, by suffixing it with any locale code available in `I18n.available_locales`
+
+```ruby
+c = Category.last
+
+c.caption_en = "Nice product" 
+c.caption_nb_no = "Fint produkt" 
+
+c.save
+
+c.caption #=> "Nice product"
+c.caption_nb_no #=> "Fint produkt" 
+
+I18n.locale = :'nb-NO'
+c.caption #=> "Fint produkt" 
+```
 
 ### Updating through forms
 
