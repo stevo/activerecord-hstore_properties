@@ -26,11 +26,12 @@ class User < ActiveRecord::Base
              'comments' => :counter,
              'age' => :number
 end
+```
 
+Usage
+-----
 
-h2. Usage
-
-h3. Retrieving values
+### Retrieving values
 
 By default, all your properties are of type String. There are number of other property types available though...
 
@@ -45,7 +46,7 @@ All properties can be retrieved just as they are written into hstore column, by 
 
 `User.last.third_name_property #=> "Jack"`
 
-*Boolean* properties, can be additionaly retrieved by using `_enabled?` and "?" suffixes, that will cast them to boolean value, i.e.
+*Boolean* properties, can be additionaly retrieved by using `_enabled?` and `?` suffixes, that will cast them to boolean value, i.e.
 
 ```ruby
 User.last.some_cool_feature_enabled? #=> true
@@ -69,7 +70,7 @@ What is more, it is possible to bump counter properties, i.e. following line wil
 `User.last.comments_bump!`
 
 
-h3. Updating through forms
+### Updating through forms
 
 You obviously need to add `:properties` to yours `attr_accessible`
 
@@ -77,9 +78,9 @@ Below is an example of building appropriate fields dynamically with formtastic
 
 
 ```erb
-<%= semantic_form_for `user do |f| %>
+<%= semantic_form_for @user do |f| %>
     <%= f.first_name %>
-    <%= f.fields_for :properties, OpenStruct.new(`user.properties) do |builder| %>
+    <%= f.fields_for :properties, OpenStruct.new(@user.properties) do |builder| %>
         <% User.properties.each do |property| %>
             <%= builder.input property.name, property.formtastic_options %>
         <% end %>
@@ -88,7 +89,8 @@ Below is an example of building appropriate fields dynamically with formtastic
 <% end %>
 ```
 
-h2. Further customization
+Further customization
+---------------------
 
 If most of your properties are of the same type, but other than string, you can overwrite `default_property_klass` to make other type default, i.e.
 
@@ -101,7 +103,8 @@ class User < ActiveRecord::Base
 end
 ```
 
-h2. When to use?
+When to use?
+------------
 
 * If you consider adding redundant column to your table, that will only sometimes store any data
 * If you would like to make particular model "configurable"
