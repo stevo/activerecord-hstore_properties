@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'activerecord-hstore_properties'
+
 describe ActiveRecord::HstoreProperties do
   with_model :Comment do
     table do |t|
@@ -8,7 +10,6 @@ describe ActiveRecord::HstoreProperties do
 
     model do
       include ActiveRecord::HstoreProperties
-
       #We need to do that, as sqlite does not support hstore
       self.class_eval do
         def properties
@@ -128,6 +129,15 @@ describe ActiveRecord::HstoreProperties do
       @comment.property_two_property.should be_nil
       I18n.locale = :'en-GB'
       @comment.property_two_property.should == 'nice'
+    end
+
+    it "should be possible to use direct readers and writers for all available locales" do
+      @comment.property_two_nb_no = 'Norwegian'
+      @comment.property_two_pl = 'Polish'
+      @comment.save
+
+      @comment.property_two_nb_no.should == 'Norwegian'
+      @comment.property_two_pl.should == 'Polish'
     end
   end
 end
