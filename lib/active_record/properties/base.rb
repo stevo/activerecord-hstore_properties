@@ -1,7 +1,11 @@
 module ActiveRecord
   module Properties
-    class Base < Struct.new(:name)
+    class Base
       class_attribute :_property_accessors
+      attr_reader :name
+      def initialize(name)
+        @name = name.to_s
+      end
 
       class << self
         def property_accessors

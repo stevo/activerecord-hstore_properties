@@ -96,6 +96,8 @@ describe ActiveRecord::HstoreProperties do
     it "should be possible to bump counter" do
       @comment.property_two_bump!
       @comment.properties['property_two'].should == '1'
+      @comment.property_two_bump!
+      @comment.properties['property_two'].should == '2'
     end
 
     it "should be possible to query for current count" do

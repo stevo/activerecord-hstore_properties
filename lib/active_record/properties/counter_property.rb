@@ -12,8 +12,8 @@ module ActiveRecord
       end
 
       add_property_accessor '_bump!' do |property|
-        _properties = self.properties
-        _properties[property.name] = self[property.name].to_i + 1
+        _properties = properties
+        _properties[property.name] = properties[property.name].to_i + 1
         update_column(:properties, ActiveRecord::Coders::Hstore.new({}).dump(_properties))
         _properties[property.name]
       end

@@ -63,9 +63,9 @@ module ActiveRecord
       end
 
       def extract_properties(args)
-        typed_properties = args.extract_options!
+        typed_properties = args.extract_options!.stringify_keys
 
-        result = args.map { |property| default_property_klass.new(property) }
+        result = args.map { |property| default_property_klass.new(property.to_s) }
         typed_properties.each do |property, _type|
           result << "active_record/properties/#{_type.to_s}_property".camelize.constantize.new(property)
         end
