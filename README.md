@@ -78,9 +78,9 @@ Below is an example of building appropriate fields dynamically with formtastic
 
 
 ```erb
-<%= semantic_form_for `user do |f| %>
+<%= semantic_form_for @user do |f| %>
     <%= f.first_name %>
-    <%= f.fields_for :properties, OpenStruct.new(`user.properties) do |builder| %>
+    <%= f.fields_for :properties, OpenStruct.new(@user.properties) do |builder| %>
         <% User.properties.each do |property| %>
             <%= builder.input property.name, property.formtastic_options %>
         <% end %>
