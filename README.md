@@ -39,12 +39,17 @@ By default, all your properties are of type String. There are number of other pr
 * boolean
 * number
 * counter
+* translation
 
 More will come in near future...
 
 All properties can be retrieved just as they are written into hstore column, by suffixing them with `_property`, i.e.
 
-`User.last.third_name_property #=> "Jack"`
+```ruby
+User.last.third_name_property #=> "Jack"
+```
+
+#### Booleans
 
 *Boolean* properties, can be additionaly retrieved by using `_enabled?` and `?` suffixes, that will cast them to boolean value, i.e.
 
@@ -62,12 +67,19 @@ User.last.some_cool_feature_disable! #=> Changes property to false
 User.last.some_cool_feature_lower! #=> Changes property to false
 ```
 
+#### Counters
+
 *Counter* properties, can be retrieved by using `_count` suffix, that will cast them to integer value, i.e.
 
-`User.last.comments_count #=> 10`
+```ruby
+User.last.comments_count #=> 10
+```
 
 What is more, it is possible to bump counter properties, i.e. following line will increment comments property by 1
-`User.last.comments_bump!`
+
+```ruby
+User.last.comments_bump!
+```
 
 
 ### Updating through forms
