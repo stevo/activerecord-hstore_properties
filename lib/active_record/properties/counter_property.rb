@@ -12,10 +12,10 @@ module ActiveRecord
       end
 
       add_property_accessor '_bump!' do |property|
-        _properties = properties
-        _properties[property.name] = properties[property.name].to_i + 1
-        update_column(:properties, ActiveRecord::Coders::Hstore.new({}).dump(_properties))
-        _properties[property.name]
+        properties_will_change!
+        properties[property.name] = properties[property.name].to_i + 1
+        save
+        properties[property.name]
       end
 
     end

@@ -12,17 +12,17 @@ module ActiveRecord
       end
 
       add_property_accessor '_raise!', '_enable!' do |property|
-        _properties = self.properties
-        _properties[property.name] = true
-        update_column(:properties, ActiveRecord::Coders::Hstore.new({}).dump(_properties))
-        _properties[property.name]
+        properties_will_change!
+        properties[property.name] = true
+        save
+        properties[property.name]
       end
 
       add_property_accessor '_lower!', '_disable!' do |property|
-        _properties = self.properties
-        _properties[property.name] = false
-        update_column(:properties, ActiveRecord::Coders::Hstore.new({}).dump(_properties))
-        _properties[property.name]
+        properties_will_change!
+        properties[property.name] = false
+        save
+        properties[property.name]
       end
     end
   end

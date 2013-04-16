@@ -3,7 +3,7 @@ module ActiveRecord
     module CommonAccessors
       extend ActiveSupport::Concern
       included do
-        add_property_accessor '_property' do |property|
+        add_property_accessor '_property','' do |property|
           properties[property.name.to_s]
         end
 
