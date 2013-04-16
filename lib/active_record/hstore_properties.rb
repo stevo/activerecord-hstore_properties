@@ -48,16 +48,22 @@ module ActiveRecord
         properties.each do |property|
           property.class.property_accessors.each do |suffixes, proc|
 
-            method_names = suffixes.map{|suffix| "#{property.name}#{suffix}"}
+            method_names = suffixes.map { |suffix| "#{property.name}#{suffix}" }
             primary_method_name = method_names.shift
 
-            #Define main method once...
-            define_method(primary_method_name) do |*args|
-              self.instance_exec(property, *args, &proc)
+            unless method_defined?(primary_method_name)
+              #Define main method once...
+              define_method(primary_method_name) do |*args|
+                self.instance_exec(property, *args, &proc)
+              end
             end
 
             #... and then define aliases
-            method_names.each { |method_name| alias_method(method_name, primary_method_name) }
+            method_names.each do |method_name|
+              unless method_defined?(method_name)
+                alias_method(method_name, primary_method_name)
+              end
+            end
           end
         end
       end
