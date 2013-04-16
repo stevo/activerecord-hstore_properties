@@ -51,11 +51,9 @@ module ActiveRecord
             method_names = suffixes.map { |suffix| "#{property.name}#{suffix}" }
             primary_method_name = method_names.shift
 
-            unless method_defined?(primary_method_name)
-              #Define main method once...
-              define_method(primary_method_name) do |*args|
-                self.instance_exec(property, *args, &proc)
-              end
+            #Define main method once...
+            define_method(primary_method_name) do |*args|
+              self.instance_exec(property, *args, &proc)
             end
 
             #... and then define aliases
