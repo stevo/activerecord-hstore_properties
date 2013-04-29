@@ -95,7 +95,7 @@ end
 c = Category.last
 c.caption = "Nice product" #this will save 'Nice product' into caption_en property 
 c.save
-c.caption #this will retrieve 'Nice product' from caption_en property 
+c.caption_property #this will retrieve 'Nice product' from caption_en property 
 ```
 
 You can always enforce in which locale you would like to store property, by suffixing it with any locale code available in `I18n.available_locales`
@@ -108,11 +108,11 @@ c.caption_nb_no = "Fint produkt"
 
 c.save
 
-c.caption #=> "Nice product"
+c.caption_property #=> "Nice product"
 c.caption_nb_no #=> "Fint produkt" 
 
 I18n.locale = :'nb-NO'
-c.caption #=> "Fint produkt" 
+c.caption_property #=> "Fint produkt" 
 ```
 
 ### Updating through forms
