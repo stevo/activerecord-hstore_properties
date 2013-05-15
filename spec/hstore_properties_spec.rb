@@ -61,6 +61,14 @@ describe ActiveRecord::HstoreProperties do
     comment.property_two_property.should == 'true'
   end
 
+  it "should be possible to assign property value using suffixed accessor" do
+    Comment.properties 'property_two' => :boolean
+    comment = Comment.new
+    comment.property_two_property = true
+    comment.save
+    comment.property_two_property.should == 'true'
+  end
+
   context "boolean properties" do
     before(:each) do
       Comment.properties 'property_two' => :boolean
