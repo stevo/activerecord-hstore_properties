@@ -7,7 +7,7 @@ module ActiveRecord
           properties[property.name.to_s]
         end
 
-        add_property_accessor '=' do |property, *args|
+        add_property_accessor '=', '_property=' do |property, *args|
           properties_will_change!
           properties[property.name] = args.shift
         end
